@@ -44,9 +44,9 @@ quantile(iris$Sepal.Width, probs = seq(from =0.1, to=0.9,by =0.1))
 #Import des fichiers CSV
 #Attention : les "/" doivent etre dans ce sens. Et pour importer,
 #On va copier le "chemin d'accès.
-dfManga <- read.csv("L:/BUT/SD/Promo 2025/jportal/Program R/manga.csv", header = TRUE, sep = ",", dec = ".")
+dfManga <- read.csv("C:/Users/Nicolas/Desktop/COURS BUT/R/manga.csv", header = TRUE, sep = ",", dec = ".")
 class(dfManga)
-dfAnime <- read.csv("L:/BUT/SD/Promo 2025/jportal/Program R/anime.csv", header = TRUE, sep = ",", dec = ".")
+dfAnime <- read.csv("C:/Users/Nicolas/Desktop/COURS BUT/R/anime.csv", header = TRUE, sep = ",", dec = ".")
 class(dfAnime)
 
 #Afficher les jeux de données dans des vues pour les visualiser
@@ -120,3 +120,20 @@ nrow(Extraction9)
 #Combien d'Anime ont une note supérieure à 9/10 ou ont plus de 400000 votes
 Extraction10 = subset(dfAnime, Score > 9 | Vote > 400000)
 nrow(Extraction10)
+
+#Dans ces questions, nous allons conserver uniquement certaines colonnes pour pouvoir fusionner les deux dataframe ensemble. Puis nous exporterons le résultat.
+#Modifier les deux dataframe en ne conservant que les variables : Title,Score,Vote,Ranked.
+dfAnime = dfAnime [, c("Title","Score","Vote","Ranked")]
+dfManga = dfManga [, c("Title","Score","Vote","Ranked")]
+
+# Pour chaque dataframe créer une colonne Type avec pour valeur Anime ou Manga selon l'objet.
+dfAnime$Type = "Anime"
+dfManga$Type = "Manga"
+
+#Compiler les deux dataframe avec la fonction rbind() dans un objet appelé dfConcat. Vérifier le résultat avec dans une vue.
+dfConcat = rbind(dfManga,dfAnime)
+View(dfConcat)
+
+#Exporter le dataframe dans un fichier csv nommée ExportTp1.csv avec la fonction write.table.
+write.table(dfConcat, file = "ExportTp1.csv", sep = "," , row.names = FALSE)
+
